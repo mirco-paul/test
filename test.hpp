@@ -67,8 +67,25 @@ namespace test{
      */
     template<auto functionToTest>
     struct TestSuite {
+
         std::vector<UnitTest<functionToTest>> unit_tests;
+
+        TestSuite();
+        
+        /**
+         * 
+         * Adds a unit test to the test suite.
+         * 
+         */
         void addTest(UnitTest<functionToTest> unit_test);
+
+        /**
+         * 
+         * Runs the entire test suite. Currently fails after the first wrong test.
+         * 
+         * @todo Find neat way to let the user determine failure and logging behaviour.
+         * 
+         */
         void run() const;
     };
 

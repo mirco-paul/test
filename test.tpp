@@ -23,6 +23,9 @@ namespace test{
     }
 
     template<auto functionToTest>
+    TestSuite<functionToTest>::TestSuite() {};
+
+    template<auto functionToTest>
     void TestSuite<functionToTest>::addTest(UnitTest<functionToTest> unit_test) {
         unit_tests.push_back(unit_test);
     };
