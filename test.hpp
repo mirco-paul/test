@@ -13,6 +13,7 @@
 
 #include "function_traits.hpp"
 
+#include <cassert>
 #include <iostream>
 #include <vector>
 

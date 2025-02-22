@@ -30,7 +30,7 @@ namespace test{
     template<auto functionToTest>
     void TestSuite<functionToTest>::run() const {
         for(const UnitTest<functionToTest>& test : unit_tests){
-            test.run();
+            if(!test.run()) assert(0);
         }
     }
 
