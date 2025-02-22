@@ -18,7 +18,7 @@ namespace test{
     template<auto functionToTest>
     bool UnitTest<functionToTest>::run() const {
         ReturnType result = std::apply(functionToTest, operands);
-        if(result != correct_result) consoleLog(result, correct_result);
+        consoleLog(result, correct_result);
         return result == correct_result;
     }
 

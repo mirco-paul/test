@@ -6,7 +6,8 @@ int f(int a, int b){
 
 test::TestSuite<f> f_tests(){
     test::TestSuite<f> tests;
-    tests.addTest({{2, 2}, 5});
+    tests.addTest({{2, 2}, 4});
+	tests.addTest({{2, 2}, 5});
     return tests;
 }
 
