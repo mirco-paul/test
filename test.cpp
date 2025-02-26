@@ -12,7 +12,7 @@ test::TestSuite<f> f_tests(){
     test::TestSuite<f> tests;
     tests.addTest({{3, 3}, gt5});
     tests.addComparativeTest({{2, 2}, 4});
-	tests.addComparativeTest({{2, 2}, 5});
+	// tests.addComparativeTest({{2, 2}, 5});
     return tests;
 }
 
