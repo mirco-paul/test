@@ -14,6 +14,7 @@
 #include "function_traits.hpp"
 
 #include <cassert>
+#include <functional>
 #include <iostream>
 #include <vector>
 
@@ -42,21 +43,60 @@ namespace test{
         using ReturnType = typename FunctionTraits<decltype(functionToTest)>::ReturnType;
         using ParameterTypes = typename FunctionTraits<decltype(functionToTest)>::ParameterTypes;
 
-        ParameterTypes operands; /** Test operands. */
-        ReturnType correct_result; /** Correct test result. */
+        ParameterTypes operands_; /** Test operands. */
 
-        UnitTest(ParameterTypes operands, ReturnType correct_result);
+        std::function<bool(const ReturnType&)> check_; /** Check if computed result is correct. */
+
+        UnitTest(ParameterTypes operands, std::function<bool(const ReturnType&)> check);
 
         /**
          * 
-         * Runs the unit test, i.e. checks if FunctionToTest(operands) == result.
+         * @todo @todo How should we handle logging? Could use flag (e.g. via Makefile) or argument.
+         */
+        void consoleLog(const ReturnType& result, bool passed) const;
+
+        /**
          * 
-         * @todo How should we handle logging? Could use flag (e.g. via Makefile) or argument
+         * Runs the unit test, i.e. computes check_(FunctionToTest(operands)).
          * 
-         * @return FunctionToTest(operands) == result
+         * @return check_(FunctionToTest(operands))
          * 
          */
         bool run() const;
+    };
+
+    /**
+     * @struct ComparativeUnitTest
+     * 
+     * Structure for comparison-based unit tests.
+     * 
+     */
+    template<auto functionToTest>
+    struct ComparativeUnitTest : UnitTest<functionToTest>{
+
+        /**
+         * Get types.
+         */
+        using ReturnType = typename FunctionTraits<decltype(functionToTest)>::ReturnType;
+        using ParameterTypes = typename FunctionTraits<decltype(functionToTest)>::ParameterTypes;
+
+        ReturnType correct_result_; /** Correct test result. */
+
+        // TODO: support check function without correct_result_ (e.g. derive comparison based unit tests from generic check)
+        // std::function<bool(const ReturnType&, const ReturnType&)> comparison_; /** Comparison function (computed_result, correct_result) --> bool */
+
+        ComparativeUnitTest(ParameterTypes operands, ReturnType correct_result, std::function<bool(const ReturnType&, const ReturnType&)> comparison = [](const ReturnType& a, const ReturnType& b){ return a == b;});
+
+        /**
+         * 
+         * Runs the unit test, i.e. computes comparison_(FunctionToTest(operands), correct_result_).
+         * 
+         * @todo How should we handle logging? Could use flag (e.g. via Makefile) or argument
+         * 
+         * @return comparison_(FunctionToTest(operands), correct_result_)
+         * 
+         */
+        using UnitTest<functionToTest>::run;
     };
 
     /**
@@ -68,16 +108,31 @@ namespace test{
     template<auto functionToTest>
     struct TestSuite {
 
-        std::vector<UnitTest<functionToTest>> unit_tests;
+        /**
+         * Get types.
+         */
+        using ReturnType = typename FunctionTraits<decltype(functionToTest)>::ReturnType;
+        using ParameterTypes = typename FunctionTraits<decltype(functionToTest)>::ParameterTypes;
 
-        TestSuite();
-        
+        std::string suite_name_;
+
+        std::vector<UnitTest<functionToTest>> unit_tests_;
+
+        TestSuite(std::string suite_name = "Test Suite");
+
         /**
          * 
          * Adds a unit test to the test suite.
          * 
          */
         void addTest(UnitTest<functionToTest> unit_test);
+        
+        /**
+         * 
+         * Adds a comparative unit test to the test suite.
+         * 
+         */
+        void addComparativeTest(ComparativeUnitTest<functionToTest> unit_test);
 
         /**
          * 
