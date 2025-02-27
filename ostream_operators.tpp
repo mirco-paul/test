@@ -14,3 +14,18 @@ std::ostream& operator<<(std::ostream& os, const std::tuple<Args...>& tup) {
     std::apply([&os](const auto&... args) { rec(os, 0, args...); }, tup);
     return os;
 }
+
+// Generic << operator for iterable types other than strings
+template<typename T>
+requires (std::ranges::range<T> && !std::same_as<T, std::string> && !is_c_string<T>)
+std::ostream& operator<<(std::ostream& os, const T& container) {
+    os << "[";
+    bool first = true;
+    for (const auto& item : container) {
+        if (!first) os << ", ";
+        os << item;
+        first = false;
+    }
+    os << "]";
+    return os;
+}

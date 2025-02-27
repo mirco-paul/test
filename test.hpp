@@ -12,7 +12,7 @@
 #pragma once
 
 #include "function_traits.hpp"
-#include "generic_operand_output_operator.hpp"
+#include "ostream_operators.hpp"
 
 #include <cassert>
 #include <functional>
