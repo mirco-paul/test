@@ -12,7 +12,7 @@ namespace test{
         std::cout << (passed ? "Passed" : "Failed") << std::endl;
         if(!passed){
             std::cout << "Operands:" << std::endl;
-            // std::cout << operands_ << std::endl;
+            std::cout << operands_ << std::endl;
             std::cout << "Result:" << std::endl;
             std::cout << result << std::endl;
         }
