@@ -50,7 +50,7 @@ namespace test{
 
     template<auto functionToTest>
     void TestSuite<functionToTest>::run() const {
-        std::cout << "Running " << suite_name_ << std::endl;
+        std::cout << "------------ " << suite_name_ << " ------------" << std::endl;
         for(const UnitTest<functionToTest>& test : unit_tests_){
             if(!test.run()) assert(0);
         }
