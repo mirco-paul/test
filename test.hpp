@@ -27,7 +27,7 @@
 namespace test{
 
     template<typename T>
-    void consoleLog(const T& result, const T& correct);
+    std::function<bool(const T&, const T&)> epsilon_comparison(const T& epsilon);
     
     /**
      * @struct UnitTest
@@ -50,8 +50,7 @@ namespace test{
         UnitTest(ParameterTypes operands, std::function<bool(const ReturnType&)> check);
 
         /**
-         * 
-         * @todo @todo How should we handle logging? Could use flag (e.g. via Makefile) or argument.
+         * @todo How should we handle logging? Could use flag (e.g. via Makefile) or argument.
          */
         void consoleLog(const ReturnType& result, bool passed) const;
 

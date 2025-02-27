@@ -1,4 +1,11 @@
 namespace test{
+
+    template <typename T>
+    std::function<bool(const T&, const T&)> epsilon_comparison(const T& epsilon){
+        return [epsilon](const T& a, const T& b){
+            return abs(a - b) < epsilon;
+        };
+    }
     
     template<auto functionToTest>
     void UnitTest<functionToTest>::consoleLog(const ReturnType& result, bool passed) const {
